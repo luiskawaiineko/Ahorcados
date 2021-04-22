@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "87691072631",
+    "project_id": "ahorcado-59fbe",
+    "storage_bucket": "ahorcado-59fbe.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:87691072631:android:a6dc9ec3cca1bec439a272",
+        "android_client_info": {
+          "package_name": "com.luismi.ahorcado"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "87691072631-gt7a4mooam0p09niv6cq9h6gle6uv1rj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBbNjXWfUn1239-WouM1y7LVue5W6uB15o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "87691072631-gt7a4mooam0p09niv6cq9h6gle6uv1rj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

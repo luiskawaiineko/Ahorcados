@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Ahorcado</string>
+    <string name="ahorcado">AHORCADO</string>
+    <string name="registrar_cuenta">Registrar cuenta</string>
+</resources>
