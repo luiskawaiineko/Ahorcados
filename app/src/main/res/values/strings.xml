@@ -1,5 +1,10 @@
 <resources>
     <string name="app_name">Ahorcado</string>
     <string name="ahorcado">AHORCADO</string>
+    <string name="iniciar_sesi_n">Iniciar sesión</string>
     <string name="registrar_cuenta">Registrar cuenta</string>
+    <string name="logo">Logo</string>
+    <string name="correo_electr_nico">Correo electrónico:</string>
+    <string name="contrase_a">Contraseña:</string>
+    <string name="nombre_de_usuario">Nombre de usuario:</string>
 </resources>
