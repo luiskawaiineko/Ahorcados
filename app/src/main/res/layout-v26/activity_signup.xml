@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#DCF7EC">
 
     <TextView
         android:id="@+id/textView2"
@@ -88,6 +89,7 @@
         android:layout_marginRight="36dp"
         android:layout_marginBottom="43dp"
         android:background="#A3C5B9"
+        android:onClick="register"
         android:text="@string/registrar_cuenta"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

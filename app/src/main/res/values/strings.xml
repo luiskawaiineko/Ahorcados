@@ -7,4 +7,7 @@
     <string name="correo_electr_nico">Correo electrónico:</string>
     <string name="contrase_a">Contraseña:</string>
     <string name="nombre_de_usuario">Nombre de usuario:</string>
+    <string name="crear_sala">crear sala</string>
+    <string name="unirse_a_sala">Unirse a sala</string>
+    <string name="c_digo_para_unirse_a_la_sala">Código para unirse a la sala:</string>
 </resources>

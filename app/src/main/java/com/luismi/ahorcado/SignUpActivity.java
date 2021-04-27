@@ -1,6 +1,9 @@
 package com.luismi.ahorcado;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.EditText;
 import android.util.Log;
 import android.widget.Toast;
@@ -12,6 +15,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
 
 public class SignUpActivity extends AppCompatActivity {
@@ -29,41 +35,43 @@ public class SignUpActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser != null){
-            reload();
+    }
+
+
+    public void register(View view){
+        if (((EditText)findViewById(R.id.inputMail)).getText().toString().equals(""))
+        {
+            Toast.makeText(getApplicationContext(), "Error: debes introducir una dirección de correo.", Toast.LENGTH_SHORT).show();
         }
-    }
-
-    private void reload() { }
-
-
-    public void register(){
-        mAuth.createUserWithEmailAndPassword(((EditText)findViewById(R.id.inputMail)).getText().toString(), ((EditText)findViewById(R.id.inputPass)).getText().toString())
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "createUserWithEmail:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            updateUI(user);
-                            Toast.makeText(SignUpActivity.this, "EXITOOOOOO",
-                                    Toast.LENGTH_SHORT).show();
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(SignUpActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
-                            updateUI(null);
+        else if (((EditText)findViewById(R.id.inputPass)).getText().toString().equals(""))
+        {
+            Toast.makeText(getApplicationContext(), "Error: debes introducir una contraseña.", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            mAuth.createUserWithEmailAndPassword(((EditText) findViewById(R.id.inputMail)).getText().toString(), ((EditText) findViewById(R.id.inputPass)).getText().toString())
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                Log.d(TAG, "createUserWithEmail:success");
+                                FirebaseUser user = mAuth.getCurrentUser();
+                                Toast.makeText(getApplicationContext(), "Cuenta creada con éxito.", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(getBaseContext(),ConnectActivity.class);
+                                startActivity(intent);
+                            } else {
+                                try {
+                                    throw task.getException();
+                                } catch (FirebaseAuthWeakPasswordException e) {
+                                    Toast.makeText(getApplicationContext(), "Error: la contraseña es demasiado débil, debería tener mínimo 6 carácteres.", Toast.LENGTH_SHORT).show();
+                                } catch (FirebaseAuthInvalidCredentialsException e) {
+                                    Toast.makeText(getApplicationContext(), "Error: la dirección de correo que has introducido no es válida.", Toast.LENGTH_SHORT).show();
+                                } catch (FirebaseAuthUserCollisionException e) {
+                                    Toast.makeText(getApplicationContext(), "Error: ya existe un usuario con la misma dirección de correo.", Toast.LENGTH_SHORT).show();
+                                } catch (Exception e) {
+                                }
+                            }
                         }
-                    }
-                });
-
-    }
-
-    private void updateUI(FirebaseUser user) {
-
+                    });
+        }
     }
 }
