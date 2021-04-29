@@ -17,6 +17,7 @@
         android:layout_marginRight="70dp"
         android:layout_marginBottom="129dp"
         android:background="#A3C5B9"
+        android:onClick="logIn"
         android:text="@string/iniciar_sesi_n"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

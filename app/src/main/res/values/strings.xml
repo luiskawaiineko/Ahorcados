@@ -10,4 +10,5 @@
     <string name="crear_sala">crear sala</string>
     <string name="unirse_a_sala">Unirse a sala</string>
     <string name="c_digo_para_unirse_a_la_sala">Código para unirse a la sala:</string>
+    <string name="salir_de_la_cuenta">Salir de la cuenta</string>
 </resources>
