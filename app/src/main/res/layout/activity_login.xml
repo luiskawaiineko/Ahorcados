@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#DCF7EC">
+    android:background="#F2F7F5">
 
     <TextView
         android:id="@+id/textView2"
@@ -17,7 +17,7 @@
         android:layout_marginRight="76dp"
         android:layout_marginBottom="61dp"
         android:gravity="center_horizontal"
-        android:text="@string/registrar_cuenta"
+        android:text="@string/iniciar_sesi_n"
         android:textSize="30sp"
         app:layout_constraintBottom_toTopOf="@+id/textView4"
         app:layout_constraintEnd_toEndOf="parent"

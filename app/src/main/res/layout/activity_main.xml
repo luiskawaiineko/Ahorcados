@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#DCF7EC"
+    android:background="#F2F7F2"
     tools:context=".MainActivity">
 
     <Button
@@ -44,10 +44,10 @@
         android:layout_height="205dp"
         android:layout_marginBottom="391dp"
         android:contentDescription="@string/logo"
+        android:src="@drawable/ahorcado"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/textView"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
-        android:src="@drawable/ahorcado" />
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <Button
         android:id="@+id/signUpButton"
