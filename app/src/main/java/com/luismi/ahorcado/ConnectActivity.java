@@ -16,7 +16,7 @@ import java.util.Random;
 import dao.Sala;
 
 public class ConnectActivity extends AppCompatActivity {
-    private DatabaseReference mDatabase;
+    private DatabaseReference remoteSalas;
 
     @Override
     public void onBackPressed() {
@@ -25,7 +25,6 @@ public class ConnectActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_connect);
-        mDatabase = FirebaseDatabase.getInstance().getReference("salas");
         //FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
     }
     public void logOut(View view) {
@@ -36,8 +35,9 @@ public class ConnectActivity extends AppCompatActivity {
     public void createSala(View view){
         Random r = new Random();
         Sala newSala = new Sala(r.nextInt(1000));
-        mDatabase.child("salas").child(""+newSala.getId()).setValue(newSala);
-        Toast.makeText(getApplicationContext(), "Error: debes introducir una contraseña.", Toast.LENGTH_SHORT).show();
+        remoteSalas = FirebaseDatabase.getInstance().getReference();
+        String hola = remoteSalas.setValue(newSala).getException().toString();
+        boolean stop = true;
     }
 
     public void connectSala(View view){
