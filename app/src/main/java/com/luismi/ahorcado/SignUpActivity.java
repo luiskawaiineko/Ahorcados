@@ -5,9 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
-import android.util.Log;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 
 
@@ -50,7 +48,6 @@ public class SignUpActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
-                                Toast.makeText(getApplicationContext(), "Cuenta creada con éxito.", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(getBaseContext(),ConnectActivity.class);
                                 startActivity(intent);
                             } else {

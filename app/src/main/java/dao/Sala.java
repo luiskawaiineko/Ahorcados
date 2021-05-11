@@ -9,6 +9,10 @@ public class Sala {
     private int estadoAhorcado;
     private List<Jugador>jugadores;
 
+    public Sala(){
+
+    }
+
     public Sala(int id) {
         this.id = id;
     }
