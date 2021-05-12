@@ -6,11 +6,21 @@ public class Sala {
     private int id;
     private String palabra;
     private String palabraJuego;
-    private int estadoAhorcado;
     private List<Jugador>jugadores;
+    private List<String> letrasDescartadas;
+    private int timer;
+    private int turno;
 
     public Sala(){
 
+    }
+
+    public int getTurno() {
+        return turno;
+    }
+
+    public void setTurno(int turno) {
+        this.turno = turno;
     }
 
     public Sala(int id) {
@@ -33,12 +43,20 @@ public class Sala {
         this.palabraJuego = palabraJuego;
     }
 
-    public int getEstadoAhorcado() {
-        return estadoAhorcado;
+    public List<String> getLetrasDescartadas() {
+        return letrasDescartadas;
     }
 
-    public void setEstadoAhorcado(int estadoAhorcado) {
-        this.estadoAhorcado = estadoAhorcado;
+    public void setLetrasDescartadas(List<String> letrasDescartadas) {
+        this.letrasDescartadas = letrasDescartadas;
+    }
+
+    public int getTimer() {
+        return timer;
+    }
+
+    public void setTimer(int timer) {
+        this.timer = timer;
     }
 
     public List<Jugador> getJugadores() {
