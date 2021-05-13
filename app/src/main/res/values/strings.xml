@@ -12,4 +12,6 @@
     <string name="c_digo_para_unirse_a_la_sala">Código para unirse a la sala:</string>
     <string name="salir_de_la_cuenta">Salir de la cuenta</string>
     <string name="c_digo_sala">Código Sala:</string>
+    <string name="name">Name</string>
+    <string name="letras_falladas">Letras falladas:</string>
 </resources>
