@@ -27,6 +27,7 @@ public class ConnectActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        finishAffinity();
     }
 
     @Override
@@ -49,6 +50,7 @@ public class ConnectActivity extends AppCompatActivity {
         newSala.setPalabra("");
         newSala.setPalabraJuego("");
         remoteSalas.child("" + newSala.getId()).setValue(newSala);
+        openSala("" + newSala.getId());
     }
 
     private int getValidSalaNumber() {
@@ -75,8 +77,7 @@ public class ConnectActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(DataSnapshot snapshot) {
                         if (snapshot.hasChild(inputCodigoSala.getText().toString())) {
-                            Toast.makeText(getApplicationContext(),(snapshot.child(inputCodigoSala.getText().toString()).getValue().toString()), Toast.LENGTH_SHORT).show();
-                            //openSala((Sala)snapshot.child(inputCodigoSala.getText().toString()).getValue());
+                            openSala(inputCodigoSala.getText().toString());
                         } else {
                             Toast.makeText(getApplicationContext(), "Error: la sala a la que deseas conectarte no existe.", Toast.LENGTH_SHORT).show();
                         }
@@ -88,8 +89,10 @@ public class ConnectActivity extends AppCompatActivity {
             }
         }
 
-        public void openSala (Sala sala)
+        public void openSala (String sala)
         {
-            Toast.makeText(getApplicationContext(), sala.getPalabra(), Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, GameActivity.class);
+            intent.putExtra("sala",inputCodigoSala.getText().toString());
+            startActivity(intent);
         }
     }

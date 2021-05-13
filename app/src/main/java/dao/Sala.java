@@ -12,7 +12,6 @@ public class Sala {
     private int turno;
 
     public Sala(){
-
     }
 
     public int getTurno() {
