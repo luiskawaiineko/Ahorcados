@@ -18,6 +18,9 @@ public class GameActivity extends AppCompatActivity {
         ImageView man = (ImageView) findViewById(R.id.manView);
         showSalaCode.setText(idSala);
     }
+
+
+
     public GameActivity() {
 
     }

@@ -89,7 +89,7 @@
         app:layout_constraintTop_toBottomOf="@+id/codigoSala" />
 
     <EditText
-        android:id="@+id/editText2"
+        android:id="@+id/inputChat"
         android:layout_width="391dp"
         android:layout_height="31dp"
         android:layout_marginStart="11dp"
@@ -149,7 +149,7 @@
         android:layout_marginRight="10dp"
         android:layout_marginBottom="7dp"
         android:background="#FFFFFFFF"
-        app:layout_constraintBottom_toTopOf="@+id/editText2"
+        app:layout_constraintBottom_toTopOf="@+id/inputChat"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView12" />
