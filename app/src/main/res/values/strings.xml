@@ -14,4 +14,5 @@
     <string name="c_digo_sala">Código Sala:</string>
     <string name="name">Name</string>
     <string name="letras_falladas">Letras falladas:</string>
+    <string name="chat">Chat:</string>
 </resources>
