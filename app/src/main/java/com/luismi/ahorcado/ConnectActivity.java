@@ -63,7 +63,6 @@ public class ConnectActivity extends AppCompatActivity {
                     number[0] = getValidSalaNumber();
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {}});
         return number[0];
@@ -82,7 +81,6 @@ public class ConnectActivity extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), "Error: la sala a la que deseas conectarte no existe.", Toast.LENGTH_SHORT).show();
                         }
                     }
-
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {}
                 });
@@ -92,7 +90,7 @@ public class ConnectActivity extends AppCompatActivity {
         public void openSala (String sala)
         {
             Intent intent = new Intent(this, GameActivity.class);
-            intent.putExtra("sala",inputCodigoSala.getText().toString());
+            intent.putExtra("sala",sala);
             startActivity(intent);
         }
     }

@@ -1,5 +1,6 @@
 package dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Sala {
@@ -7,12 +8,15 @@ public class Sala {
     private String palabra;
     private String palabraJuego;
     private List<Jugador>jugadores;
-    private List<String> letrasDescartadas;
-    private List<>
+    private String letrasDescartadas;
+    private List<String>chat;
     private int timer;
     private int turno;
 
     public Sala(){
+    jugadores = new ArrayList<>();
+    chat = new ArrayList<>();
+    chat.add("Usuario1: Hola mundo");
     }
 
     public int getTurno() {
@@ -43,11 +47,23 @@ public class Sala {
         this.palabraJuego = palabraJuego;
     }
 
-    public List<String> getLetrasDescartadas() {
+    public String getLetrasDescartadas() {
         return letrasDescartadas;
     }
 
-    public void setLetrasDescartadas(List<String> letrasDescartadas) {
+    public List<String> getChat() {
+        return chat;
+    }
+
+    public void addChatMessage(String chatMessage) {
+        this.chat.add(chatMessage);
+    }
+
+    public void setChat(List<String> chat) {
+        this.chat = chat;
+    }
+
+    public void setLetrasDescartadas(String letrasDescartadas) {
         this.letrasDescartadas = letrasDescartadas;
     }
 
