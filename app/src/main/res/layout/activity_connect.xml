@@ -71,6 +71,8 @@
         android:background="#FFFFFFFF"
         android:ems="10"
         android:inputType="number"
+        android:strokeColor="#FF000000"
+        android:strokeWidth="2dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

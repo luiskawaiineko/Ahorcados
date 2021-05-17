@@ -8,6 +8,7 @@ public class Sala {
     private String palabraJuego;
     private List<Jugador>jugadores;
     private List<String> letrasDescartadas;
+    private List<>
     private int timer;
     private int turno;
 
