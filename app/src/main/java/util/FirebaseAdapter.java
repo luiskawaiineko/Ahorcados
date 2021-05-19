@@ -5,7 +5,7 @@ import android.content.Context;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DatabaseReference;
 
-class FirebaseAdapter extends FirebaseRecyclerAdapter<String, ChatMessageHolder> {
+public class FirebaseAdapter extends FirebaseRecyclerAdapter<String, ChatMessageHolder> {
 
     Context context;
 
