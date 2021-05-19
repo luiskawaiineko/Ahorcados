@@ -1,5 +1,8 @@
 package dao;
 
+import com.github.javafaker.Faker;
+import com.google.firebase.auth.FirebaseUser;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,17 +10,14 @@ public class Sala {
     private int id;
     private String palabra;
     private String palabraJuego;
-    private List<Jugador>jugadores;
+    private List<String>jugadores;
     private String letrasDescartadas;
     private List<String>chat;
     private int timer;
     private int turno;
 
-    public Sala(){
-    jugadores = new ArrayList<>();
-    chat = new ArrayList<>();
-    chat.add("Usuario1: Hola mundo");
-    }
+    public void setup(){
+}
 
     public int getTurno() {
         return turno;
@@ -29,6 +29,12 @@ public class Sala {
 
     public Sala(int id) {
         this.id = id;
+        jugadores = new ArrayList<String>();
+        chat = new ArrayList<String>();
+        chat.add("Usuario1: Hola mundo");
+        Faker faker = new Faker();
+        this.palabra = faker.book().title();
+        this.palabraJuego = palabra.replaceAll("[^ ]", "_");
     }
 
     public String getPalabra() {
@@ -75,7 +81,7 @@ public class Sala {
         this.timer = timer;
     }
 
-    public List<Jugador> getJugadores() {
+    public List<String> getJugadores() {
         return jugadores;
     }
 
@@ -83,7 +89,7 @@ public class Sala {
         return id;
     }
 
-    public void setJugadores(List<Jugador> jugadores) {
+    public void setJugadores(List<String> jugadores) {
         this.jugadores = jugadores;
     }
 }

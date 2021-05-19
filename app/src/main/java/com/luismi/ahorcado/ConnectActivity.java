@@ -2,14 +2,12 @@ package com.luismi.ahorcado;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -20,7 +18,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.Random;
 
 import dao.Sala;
-
+//834
 public class ConnectActivity extends AppCompatActivity {
     private DatabaseReference remoteSalas;
     private EditText inputCodigoSala;
@@ -36,7 +34,6 @@ public class ConnectActivity extends AppCompatActivity {
         setContentView(R.layout.activity_connect);
         remoteSalas = FirebaseDatabase.getInstance("https://ahorcado-59fbe-default-rtdb.europe-west1.firebasedatabase.app/").getReference("salas");
         inputCodigoSala = (EditText) findViewById(R.id.inputCodigoSala);
-        //FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
     }
 
     public void logOut(View view) {
@@ -47,8 +44,8 @@ public class ConnectActivity extends AppCompatActivity {
 
     public void createSala(View view) {
         Sala newSala = new Sala(getValidSalaNumber());
-        newSala.setPalabra("");
-        newSala.setPalabraJuego("");
+        newSala.addChatMessage("Jugador1: Hola mundo");
+        newSala.getJugadores().add(FirebaseAuth.getInstance().getCurrentUser().getUid());
         remoteSalas.child("" + newSala.getId()).setValue(newSala);
         openSala("" + newSala.getId());
     }
