@@ -16,7 +16,8 @@ public class FirebaseAdapter extends FirebaseRecyclerAdapter<String, ChatMessage
     }
 
     @Override
-    protected void populateViewHolder(ChatMessageHolder chatMessageHolder, final String chatMessage, int position) {
+    protected void populateViewHolder(ChatMessageHolder chatMessageHolder,String chatMessage, int position) {
         chatMessageHolder.chatMessage.setText(chatMessage);
     }
+
 }

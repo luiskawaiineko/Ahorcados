@@ -8,6 +8,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -58,10 +59,12 @@ public class GameActivity extends AppCompatActivity {
         });
 
         FirebaseAdapter adapter = new FirebaseAdapter(String.class,R.layout.recyclerview_row,ChatMessageHolder.class,remoteSalas.child("idSala").child("chat"),this);
+        LinearLayoutManager layout = new LinearLayoutManager(this);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(chatView.getContext(),layout.getOrientation());
+        adapter.startListening();
         chatView.setAdapter(adapter);
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
-                layoutManager.getOrientation());
-        recyclerView.addItemDecoration(dividerItemDecoration);
+        chatView.setLayoutManager(layout);
+        chatView.addItemDecoration(dividerItemDecoration);
     }
 
     public GameActivity() {
