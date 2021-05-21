@@ -31,7 +31,7 @@ public class Sala {
         this.id = id;
         jugadores = new ArrayList<String>();
         chat = new ArrayList<String>();
-        chat.add("Usuario1: Hola mundo");
+        this.chat.add("Sala creada con éxito!");
         Faker faker = new Faker();
         this.palabra = faker.book().title();
         this.palabraJuego = palabra.replaceAll("[^ ]", "_");
