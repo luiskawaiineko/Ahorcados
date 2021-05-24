@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#DCF7EC"
-    tools:context=".ConnectActivity">
+    tools:context=".GameActivity">
 
     <ImageView
         android:id="@+id/manView"
@@ -172,8 +172,9 @@
         android:layout_marginRight="14dp"
         android:layout_marginBottom="36dp"
         android:background="#A3C5B9"
+        android:onClick="sendChatMessage"
         android:text="Enviar"
-        android:textSize="12"
+        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/inputChat"

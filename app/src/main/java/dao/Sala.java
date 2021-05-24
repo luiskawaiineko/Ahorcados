@@ -28,6 +28,7 @@ public class Sala {
     }
 
     public Sala(int id) {
+        turno = 0;
         this.id = id;
         jugadores = new ArrayList<String>();
         chat = new ArrayList<String>();

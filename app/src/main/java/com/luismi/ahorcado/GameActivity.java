@@ -7,6 +7,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +17,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -26,14 +29,17 @@ import util.ChatMessageHolder;
 
 public class GameActivity extends AppCompatActivity {
 
+    private FirebaseAuth mAuth;
     private DatabaseReference remoteSalas;
     private String idSala;
+    private FirebaseUser currentUser;
     private ImageView man;
     private EditText inputChat;
     private TextView palabraJuego;
     private RecyclerView chatView;
     private FirebaseRecyclerAdapter<String, ChatMessageHolder> adapter;
     private FirebaseRecyclerOptions<String> options;
+    private boolean turno;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +53,8 @@ public class GameActivity extends AppCompatActivity {
         man = findViewById(R.id.manView);
         inputChat = findViewById(R.id.inputChat);
         chatView = findViewById(R.id.chatView);
+        mAuth = FirebaseAuth.getInstance();
+        currentUser = mAuth.getCurrentUser();
         chatView.setHasFixedSize(true);
         options = new FirebaseRecyclerOptions.Builder<String>().setQuery(remoteSalas.child(idSala).child("chat"), String.class).build();
         adapter = new FirebaseRecyclerAdapter<String, ChatMessageHolder>(options) {
@@ -78,16 +86,67 @@ public class GameActivity extends AppCompatActivity {
 
             }
         });
+        remoteSalas.child(idSala).child("turno").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot turnoSnapshot) {
+                remoteSalas.child("jugadores").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot jugadoresSnapshot) {
+                        int position = 0;
+                        int looper = 0;
+                        for (DataSnapshot ds : jugadoresSnapshot.getChildren())
+                        {
+                            if (ds.getValue().equals(currentUser.getUid()))
+                            {
+                                position = looper;
+                            }
+                            looper++;
+                        }
+                        remoteSalas.child(idSala).child("chat").child("" + chatView.getAdapter().getItemCount()).setValue(position);
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {}
+                });
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
         //configuración del adapter
         LinearLayoutManager layout = new LinearLayoutManager(this);
         layout.setReverseLayout(true);
-        layout.setStackFromEnd(false);
+        layout.setStackFromEnd(true);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(chatView.getContext(), layout.getOrientation());
         chatView.setAdapter(adapter);
         chatView.setLayoutManager(layout);
         adapter.startListening();
         chatView.addItemDecoration(dividerItemDecoration);
+        chatView.scrollToPosition(chatView.getAdapter().getItemCount()-1);
+
+    }
+
+    public void sendChatMessage(View view)
+    {
+        if (!inputChat.getText().equals(""))
+        {
+            if (inputChat.getText().length() == 1)
+            {
+                //juega con la letra
+
+                if (inputChat.getText().toString().matches("[a-zA-Z]+"))
+                {
+
+                }else{
+                    Toast.makeText(getApplicationContext(), "Error: para jugar, debes introducir una única letra en el chat.", Toast.LENGTH_SHORT).show();
+                }
+            }
+            else {
+                //envía mensaje al chat
+                remoteSalas.child(idSala).child("chat").child("" + chatView.getAdapter().getItemCount()).setValue(currentUser.getDisplayName() + ": " + inputChat.getText());
+            }
+        }
     }
 
     @Override

@@ -16,6 +16,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 
 public class SignUpActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
@@ -42,12 +44,21 @@ public class SignUpActivity extends AppCompatActivity {
         {
             Toast.makeText(getApplicationContext(), "Error: debes introducir una contraseña.", Toast.LENGTH_SHORT).show();
         }
+        else if (((EditText)findViewById(R.id.inputUsername)).getText().toString().equals(""))
+        {
+            Toast.makeText(getApplicationContext(), "Error: debes introducir un nombre de usuario.", Toast.LENGTH_SHORT).show();
+        }
         else {
             mAuth.createUserWithEmailAndPassword(((EditText) findViewById(R.id.inputMail)).getText().toString(), ((EditText) findViewById(R.id.inputPass)).getText().toString())
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
+                                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                        .setDisplayName(((EditText)findViewById(R.id.inputUsername)).getText().toString())
+                                        .build();
+                                user.updateProfile(profileUpdates);
                                 Intent intent = new Intent(getBaseContext(),ConnectActivity.class);
                                 startActivity(intent);
                             } else {
