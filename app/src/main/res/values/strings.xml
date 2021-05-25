@@ -16,4 +16,5 @@
     <string name="letras_falladas">Letras falladas:</string>
     <string name="chat">Chat:</string>
     <string name="palabra">Palabra:</string>
+    <string name="enviar">Enviar</string>
 </resources>

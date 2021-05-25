@@ -13,7 +13,6 @@ public class Sala {
     private List<String>jugadores;
     private String letrasDescartadas;
     private List<String>chat;
-    private int timer;
     private int turno;
 
     public void setup(){
@@ -28,13 +27,13 @@ public class Sala {
     }
 
     public Sala(int id) {
-        turno = 0;
         this.id = id;
         jugadores = new ArrayList<String>();
         chat = new ArrayList<String>();
         this.chat.add("Sala creada con éxito!");
         Faker faker = new Faker();
         this.palabra = faker.book().title();
+        this.palabra = palabra.replaceAll("[^a-zA-Z ]", "");
         this.palabraJuego = palabra.replaceAll("[^ ]", "_");
     }
 
@@ -72,14 +71,6 @@ public class Sala {
 
     public void setLetrasDescartadas(String letrasDescartadas) {
         this.letrasDescartadas = letrasDescartadas;
-    }
-
-    public int getTimer() {
-        return timer;
-    }
-
-    public void setTimer(int timer) {
-        this.timer = timer;
     }
 
     public List<String> getJugadores() {

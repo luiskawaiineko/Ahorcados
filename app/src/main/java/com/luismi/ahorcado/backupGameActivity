@@ -41,7 +41,7 @@ public class GameActivity extends AppCompatActivity {
     private RecyclerView chatView;
     private FirebaseRecyclerAdapter<String, ChatMessageHolder> adapter;
     private FirebaseRecyclerOptions<String> options;
-    private boolean turno = false;
+    private boolean turno;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,23 +90,24 @@ public class GameActivity extends AppCompatActivity {
         });
         remoteSalas.child(idSala).child("turno").addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull final DataSnapshot turnoSnapshot) {
-                remoteSalas.child(idSala).child("jugadores").addListenerForSingleValueEvent(new ValueEventListener() {
+            public void onDataChange(@NonNull DataSnapshot turnoSnapshot) {
+                remoteSalas.child("jugadores").addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot jugadoresSnapshot) {
                         int position = 0;
                         int looper = 0;
-                        for (DataSnapshot jugadores : jugadoresSnapshot.getChildren()) {
-                            if (jugadores.getValue().equals(currentUser.getUid())) {
-                                position = looper;
+                        for (int i = 0; i < jugadoresSnapshot.getChildrenCount(); i++)
+                        {
+                            if (jugadoresSnapshot.child(""+i).getValue().equals(currentUser.getUid()))
+                            {
+                                remoteSalas.child(idSala).child("chat").child("" + chatView.getAdapter().getItemCount()).setValue(" - "+i+" - "+i+jugadoresSnapshot.child(""+i).getValue());
+                                position = i;
                             }
-                            looper++;
                         }
-                        turno = turnoSnapshot.getValue().toString().trim().equals(""+position);
+                        //remoteSalas.child(idSala).child("chat").child("" + chatView.getAdapter().getItemCount()).setValue(""+position);
                     }
                     @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                    }
+                    public void onCancelled(@NonNull DatabaseError error) {}
                 });
             }
 
@@ -125,42 +126,43 @@ public class GameActivity extends AppCompatActivity {
         chatView.setLayoutManager(layout);
         adapter.startListening();
         chatView.addItemDecoration(dividerItemDecoration);
-        remoteSalas.child(idSala).child("chat").addChildEventListener(new ChildEventListener() {
+        remoteSalas.child(idSala).child("chat").addChildEventListener(new ChildEventListener(){
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 chatView.smoothScrollToPosition(chatView.getAdapter().getItemCount());
             }
 
             @Override
-            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-            }
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
 
             @Override
-            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-            }
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {}
 
             @Override
-            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-            }
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-            }
+            public void onCancelled(@NonNull DatabaseError error) {}
         });
     }
 
 
-    public void sendChatMessage(View view) {
-        if (!inputChat.getText().equals("")) {
-            if (inputChat.getText().length() == 1) {
+    public void sendChatMessage(View view)
+    {
+        if (!inputChat.getText().equals(""))
+        {
+            if (inputChat.getText().length() == 1)
+            {
                 //juega con la letra
 
-                if (inputChat.getText().toString().matches("[a-zA-Z]+")) {
+                if (inputChat.getText().toString().matches("[a-zA-Z]+"))
+                {
 
-                } else {
-                    Toast.makeText(getApplicationContext(), "Error: para jugar, debes introducir una letra en el chat.", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(getApplicationContext(), "Error: para jugar, debes introducir una única letra en el chat.", Toast.LENGTH_SHORT).show();
                 }
-            } else {
+            }
+            else {
                 //envía mensaje al chat
                 remoteSalas.child(idSala).child("chat").child("" + chatView.getAdapter().getItemCount()).setValue(currentUser.getDisplayName() + ": " + inputChat.getText());
             }
