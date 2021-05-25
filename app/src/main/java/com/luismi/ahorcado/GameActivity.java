@@ -154,7 +154,7 @@ public class GameActivity extends AppCompatActivity {
         if (!inputChat.getText().equals("")) {
             if (inputChat.getText().length() == 1) {
                 //juega con la letra
-                
+
                 if (inputChat.getText().toString().matches("[a-zA-Z]+")) {
 
                 } else {
