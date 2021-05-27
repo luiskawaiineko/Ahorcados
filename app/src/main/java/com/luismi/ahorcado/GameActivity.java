@@ -207,7 +207,7 @@ public class GameActivity extends AppCompatActivity {
                                                 newPalabraJuego.setCharAt(i,palabra.charAt(i));
                                             }
                                         }
-                                        remoteSalas.child(idSala).child("palabraJuego").setValue(newPalabraJuego);
+                                        remoteSalas.child(idSala).child("palabraJuego").setValue(newPalabraJuego.toString());
                                     }else
                                     {
                                         if (failedLetters.getText().toString().replace(" ","").length()>5)
