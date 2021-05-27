@@ -1,6 +1,8 @@
 package com.luismi.ahorcado;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -18,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.github.javafaker.Faker;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -36,12 +39,13 @@ public class GameActivity extends AppCompatActivity {
     private String idSala;
     private FirebaseUser currentUser;
     private ImageView man;
+    private TextView failedLetters;
     private EditText inputChat;
     private TextView palabraJuego;
     private RecyclerView chatView;
     private FirebaseRecyclerAdapter<String, ChatMessageHolder> adapter;
     private FirebaseRecyclerOptions<String> options;
-    private boolean turno = false;
+    private String palabra;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +61,9 @@ public class GameActivity extends AppCompatActivity {
         chatView = findViewById(R.id.chatView);
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
+        failedLetters = findViewById(R.id.failedLetters);
         chatView.setHasFixedSize(true);
+        palabra = "";
         options = new FirebaseRecyclerOptions.Builder<String>().setQuery(remoteSalas.child(idSala).child("chat"), String.class).build();
         adapter = new FirebaseRecyclerAdapter<String, ChatMessageHolder>(options) {
             @Override
@@ -77,6 +83,7 @@ public class GameActivity extends AppCompatActivity {
         showSalaCode.setText(idSala);
 
         //listeners
+
         remoteSalas.child(idSala).child("palabraJuego").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -88,26 +95,48 @@ public class GameActivity extends AppCompatActivity {
 
             }
         });
-        remoteSalas.child(idSala).child("turno").addValueEventListener(new ValueEventListener() {
+
+        remoteSalas.child(idSala).child("palabra").addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull final DataSnapshot turnoSnapshot) {
-                remoteSalas.child(idSala).child("jugadores").addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot jugadoresSnapshot) {
-                        int position = 0;
-                        int looper = 0;
-                        for (DataSnapshot jugadores : jugadoresSnapshot.getChildren()) {
-                            if (jugadores.getValue().equals(currentUser.getUid())) {
-                                position = looper;
-                            }
-                            looper++;
-                        }
-                        turno = turnoSnapshot.getValue().toString().trim().equals(""+position);
-                    }
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                    }
-                });
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                palabra = snapshot.getValue().toString();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        remoteSalas.child(idSala).child("letrasDescartadas").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                failedLetters.setText(snapshot.getValue().toString().replace("", " ").trim());
+                //muñeco
+                switch (snapshot.getValue().toString().length())
+                {
+                    case 0:
+                        man.setImageResource(R.drawable.hangman0);
+                        break;
+                    case 1:
+                        man.setImageResource(R.drawable.hangman1);
+                        break;
+                    case 2:
+                        man.setImageResource(R.drawable.hangman2);
+                        break;
+                    case 3:
+                        man.setImageResource(R.drawable.hangman3);
+                        break;
+                    case 4:
+                        man.setImageResource(R.drawable.hangman4);
+                        break;
+                    case 5:
+                        man.setImageResource(R.drawable.hangman5);
+                        break;
+                    case 6:
+                        man.setImageResource(R.drawable.hangman6);
+                        break;
+                }
             }
 
             @Override
@@ -149,20 +178,72 @@ public class GameActivity extends AppCompatActivity {
         });
     }
 
-
     public void sendChatMessage(View view) {
-        if (!inputChat.getText().equals("")) {
-            if (inputChat.getText().length() == 1) {
+        final String stringChat = inputChat.getText().toString();
+        if (!stringChat.equals("")) {
+            if (stringChat.length() == 1) {
                 //juega con la letra
+                if (stringChat.toString().matches("[a-zA-Z]+")) {
+                    remoteSalas.child(idSala).child("lastTurno").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            if (snapshot.getValue().toString().equals(currentUser.getUid()))
+                            {
+                                Toast.makeText(getApplicationContext(), "Error: El mismo jugador no puede jugar dos letras seguidas.", Toast.LENGTH_SHORT).show();
+                            }else{
+                                if (palabraJuego.getText().toString().trim().contains(stringChat.trim())||failedLetters.getText().toString().trim().contains(stringChat.trim()))
+                                {
+                                    Toast.makeText(getApplicationContext(), "Error: La letra que has introducido ya fue jugada anteriormente.", Toast.LENGTH_SHORT).show();
+                                }
+                                else {
+                                    remoteSalas.child(idSala).child("lastTurno").setValue(currentUser.getUid());
+                                    if (palabra.contains(stringChat))
+                                    {
+                                        StringBuilder newPalabraJuego = new StringBuilder(palabraJuego.getText().toString());
+                                        for(int i=0; i<palabra.length();i++)
+                                        {
+                                            if (palabra.charAt(i) == stringChat.charAt(0))
+                                            {
+                                                newPalabraJuego.setCharAt(i,palabra.charAt(i));
+                                            }
+                                        }
+                                        remoteSalas.child(idSala).child("palabraJuego").setValue(newPalabraJuego);
+                                    }else
+                                    {
+                                        if (failedLetters.getText().toString().replace(" ","").length()>5)
+                                        {
+                                            new Handler().postDelayed(new Runnable() {
+                                                public void run() {
+                                                    remoteSalas.child(idSala).child("chat").child("" + chatView.getAdapter().getItemCount()).setValue(currentUser.getDisplayName() + " ha matado al muñeco");
+                                                }
+                                            }, 1000);
+                                            new Handler().postDelayed(new Runnable() {
+                                                public void run() {
+                                                    remoteSalas.child(idSala).child("letrasDescartadas").setValue("");
+                                                    Faker faker = new Faker();
+                                                    String newPalabra = faker.book().title().replaceAll("[^a-zA-Z ]", "");
+                                                    remoteSalas.child(idSala).child("palabra").setValue(newPalabra);
+                                                    remoteSalas.child(idSala).child("palabraJuego").setValue(newPalabra.replaceAll("[^ ]", "_"));
+                                                }
+                                            }, 5000);
+                                        }
+                                        remoteSalas.child(idSala).child("letrasDescartadas").setValue(failedLetters.getText().toString().replace(" ","")+stringChat);
+                                    }
+                                    remoteSalas.child(idSala).child("chat").child("" + chatView.getAdapter().getItemCount()).setValue(currentUser.getDisplayName() + " ha jugado con la letra " + stringChat);
+                                }
+                            }
+                        }
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
 
-                if (inputChat.getText().toString().matches("[a-zA-Z]+")) {
-
+                        }
+                    });
                 } else {
                     Toast.makeText(getApplicationContext(), "Error: para jugar, debes introducir una letra en el chat.", Toast.LENGTH_SHORT).show();
                 }
             } else {
                 //envía mensaje al chat
-                remoteSalas.child(idSala).child("chat").child("" + chatView.getAdapter().getItemCount()).setValue(currentUser.getDisplayName() + ": " + inputChat.getText());
+                remoteSalas.child(idSala).child("chat").child("" + chatView.getAdapter().getItemCount()).setValue(currentUser.getDisplayName() + ": " + stringChat);
             }
             inputChat.getText().clear();
         }
@@ -185,11 +266,19 @@ public class GameActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
+    protected void onPause() {
+        super.onPause();
         if (adapter != null) {
-            adapter.startListening();
+            adapter.stopListening();
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        if (adapter != null) {
+            adapter.stopListening();
+        }
+        Intent intent = new Intent(getBaseContext(), ConnectActivity.class);
+        startActivity(intent);
+    }
 }

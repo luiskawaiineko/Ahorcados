@@ -44,7 +44,6 @@ public class ConnectActivity extends AppCompatActivity {
 
     public void createSala(View view) {
         Sala newSala = new Sala(getValidSalaNumber());
-        newSala.getJugadores().add(FirebaseAuth.getInstance().getCurrentUser().getUid());
         remoteSalas.child("" + newSala.getId()).setValue(newSala);
         openSala("" + newSala.getId());
     }

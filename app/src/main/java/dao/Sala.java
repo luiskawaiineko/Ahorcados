@@ -10,30 +10,29 @@ public class Sala {
     private int id;
     private String palabra;
     private String palabraJuego;
-    private List<String>jugadores;
     private String letrasDescartadas;
     private List<String>chat;
-    private int turno;
+    private String lastTurno;
 
     public void setup(){
 }
 
-    public int getTurno() {
-        return turno;
+    public String getLastTurno() {
+        return lastTurno;
     }
 
-    public void setTurno(int turno) {
-        this.turno = turno;
+    public void setLastTurno(String turno) {
+        this.lastTurno = turno;
     }
 
     public Sala(int id) {
         this.id = id;
-        jugadores = new ArrayList<String>();
         chat = new ArrayList<String>();
         this.chat.add("Sala creada con éxito!");
         Faker faker = new Faker();
-        this.palabra = faker.book().title();
-        this.palabra = palabra.replaceAll("[^a-zA-Z ]", "");
+        this.lastTurno = "";
+        this.letrasDescartadas = "";
+        this.palabra = faker.book().title().replaceAll("[^a-zA-Z ]", "");
         this.palabraJuego = palabra.replaceAll("[^ ]", "_");
     }
 
@@ -73,15 +72,8 @@ public class Sala {
         this.letrasDescartadas = letrasDescartadas;
     }
 
-    public List<String> getJugadores() {
-        return jugadores;
-    }
-
     public int getId() {
         return id;
     }
 
-    public void setJugadores(List<String> jugadores) {
-        this.jugadores = jugadores;
-    }
 }
