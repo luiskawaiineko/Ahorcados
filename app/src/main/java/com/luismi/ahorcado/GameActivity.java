@@ -210,6 +210,7 @@ public class GameActivity extends AppCompatActivity {
                                         remoteSalas.child(idSala).child("palabraJuego").setValue(newPalabraJuego.toString());
                                     }else
                                     {
+                                        //si va a matar al muñeco
                                         if (failedLetters.getText().toString().replace(" ","").length()>=5)
                                         {
                                             new Handler().postDelayed(new Runnable() {
@@ -239,10 +240,11 @@ public class GameActivity extends AppCompatActivity {
                         }
                     });
                 } else {
+                    //si envía un solo caracter que no es alfanumérico
                     Toast.makeText(getApplicationContext(), "Error: para jugar, debes introducir una letra en el chat.", Toast.LENGTH_SHORT).show();
                 }
             } else {
-                //envía mensaje al chat
+                //si hay mas de un carácter, envía mensaje al chat
                 remoteSalas.child(idSala).child("chat").child("" + chatView.getAdapter().getItemCount()).setValue(currentUser.getDisplayName() + ": " + stringChat);
             }
             inputChat.getText().clear();
