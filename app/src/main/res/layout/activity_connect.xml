@@ -38,8 +38,12 @@
 
     <Button
         android:id="@+id/button3"
-        android:layout_width="204dp"
+        android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
         android:layout_marginBottom="13dp"
         android:background="#A3C5B9"
         android:onClick="createSala"
@@ -51,8 +55,12 @@
 
     <Button
         android:id="@+id/button2"
-        android:layout_width="206dp"
+        android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
         android:layout_marginBottom="16dp"
         android:background="#A3C5B9"
         android:onClick="connectSala"
@@ -70,7 +78,6 @@
         android:text="Instrucciones: el ahorcado de toda la vida, introduce una letra en el chat para jugar. Una única norma básica, a pesar de no haber turnos ordenados, un mismo jugador no puede jugar una letra después de otra."
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.6"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/inputCodigoSala" />
 
@@ -98,9 +105,12 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
         android:layout_marginLeft="12dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginRight="12dp"
         android:layout_marginBottom="11dp"
         android:text="@string/c_digo_para_unirse_a_la_sala"
         app:layout_constraintBottom_toTopOf="@+id/inputCodigoSala"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/button2"
         app:layout_constraintTop_toBottomOf="@+id/button2" />
 
