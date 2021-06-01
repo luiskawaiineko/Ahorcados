@@ -1,10 +1,14 @@
 package com.luismi.ahorcado;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -83,7 +87,6 @@ public class GameActivity extends AppCompatActivity {
         showSalaCode.setText(idSala);
 
         //listeners
-
         remoteSalas.child(idSala).child("palabraJuego").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -145,9 +148,21 @@ public class GameActivity extends AppCompatActivity {
             }
         });
 
+        inputChat.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                if(actionId == EditorInfo.IME_ACTION_DONE
+                        || keyEvent.getAction() == KeyEvent.ACTION_DOWN
+                        || keyEvent.getAction() == KeyEvent.KEYCODE_ENTER) {
+                    sendChatMessage(chatView);
+                    return true;
+                }
+                return false;
+            }
+        });
+
         //configuración del adapter
         LinearLayoutManager layout = new LinearLayoutManager(this);
-        //layout.setReverseLayout(true);
         layout.setStackFromEnd(true);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(chatView.getContext(), layout.getOrientation());
         chatView.setAdapter(adapter);
@@ -247,7 +262,13 @@ public class GameActivity extends AppCompatActivity {
                 //si hay mas de un carácter, envía mensaje al chat
                 remoteSalas.child(idSala).child("chat").child("" + chatView.getAdapter().getItemCount()).setValue(currentUser.getDisplayName() + ": " + stringChat);
             }
+            //borra el cuadro de texto
             inputChat.getText().clear();
+            //oculta el teclado
+            InputMethodManager inputmanager = (InputMethodManager)this.getSystemService(Context.INPUT_METHOD_SERVICE);
+            if (inputmanager != null) {
+                inputmanager.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
+            }
         }
     }
 
@@ -272,6 +293,14 @@ public class GameActivity extends AppCompatActivity {
         super.onPause();
         if (adapter != null) {
             adapter.stopListening();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (adapter != null) {
+            adapter.startListening();
         }
     }
 
